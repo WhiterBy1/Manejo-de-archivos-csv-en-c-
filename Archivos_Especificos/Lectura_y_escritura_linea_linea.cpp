@@ -13,11 +13,24 @@ struct Persona {
 int main() {
     // Abrimos un archivo para leer los datos de entrada
     std::ifstream archivoEntrada("entrada.csv");
+    // Verificamos si el archivo se abrió correctamente
+    if (!archivoEntrada.is_open()) {
+        std::cerr << "No se pudo abrir el archivo de entrada.\n";
+        return 1;
+    }
+
     // Abrimos otro archivo para escribir los datos de salida
     std::ofstream archivoSalida("salida.csv");
+    if (!archivoSalida.is_open()) {
+        std::cerr << "No se pudo abrir el archivo de salida.\n";
+        return 1;
+    }
 
     std::vector<Persona> personas;  // Creamos un vector de personas
     std::string linea;
+
+    // Omitimos la primera línea del archivo (los encabezados)
+    std::getline(archivoEntrada, linea);
 
     // Leemos el archivo línea por línea
     while (std::getline(archivoEntrada, linea)) {
@@ -28,8 +41,18 @@ int main() {
         std::getline(ss, persona.nombre, ',');
         std::string edad;
         std::getline(ss, edad, ',');
-        persona.edad = std::stoi(edad);
+        
+        // Eliminar espacios adicionales que puedan estar presentes
+        edad.erase(0, edad.find_first_not_of(" "));  // Eliminar espacios iniciales
+        try {
+            persona.edad = std::stoi(edad);
+        } catch (const std::invalid_argument& e) {
+            std::cerr << "Error: edad inválida en la línea \"" << linea << "\"\n";
+            continue;  // Saltar a la siguiente línea
+        }
+        
         std::getline(ss, persona.ciudad, ',');
+        persona.ciudad.erase(0, persona.ciudad.find_first_not_of(" "));  // Eliminar espacios iniciales
 
         personas.push_back(persona);  // Añadimos persona al vector
     }
