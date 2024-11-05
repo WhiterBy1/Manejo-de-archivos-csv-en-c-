@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
 #include <vector>  // Incluimos vector para guardar varias "Personas"
 
 // Definimos una estructura que representa a una Persona
@@ -12,7 +13,7 @@ struct Persona {
 
 int main() {
     // Abrimos el archivo CSV en modo de lectura
-    std::ifstream archivo("personas.csv");
+    std::ifstream archivo("salida.csv");
     std::vector<Persona> personas;  // Creamos un vector para guardar varias personas
     std::string linea;  // Una variable para leer cada línea del archivo
 
@@ -30,7 +31,6 @@ int main() {
 
         personas.push_back(persona);  // Añadimos la persona al vector
     }
-
     archivo.close();  // Cerramos el archivo
-    return 0;  // Finalizamos el programa
+    return 0;  // Finalizamos el programa+
 }
