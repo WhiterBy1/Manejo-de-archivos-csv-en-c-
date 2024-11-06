@@ -44,7 +44,7 @@ void guardarPersona(const Persona& persona, const string& nombreArchivo) {
 
 // Función para cargar los datos de una persona desde un archivo CSV
 bool cargarPersona(Persona& persona, const string& nombreArchivo) {
-    ifstream archivo(nombreArchivo);
+    ifstream archivo(nombreArchivo ios::app);
     if (archivo.is_open()) {
         string linea;
         if (getline(archivo, linea)) {  // Leer toda la línea
@@ -83,6 +83,54 @@ int main() {
         {"Ciudad de México", "Avenida Siempre Viva", 123},
         {"Desarrollador", "Ingeniero de soporte", "Administrador"}
     };
+    bool seguir = true;
+    do{//le pedimos los datos al usuario
+        cout << "Ingrese los datos del usuario: " << endl;
+        cout << "Ingrese el nombre de la persona: ";
+        getline(cin, persona.nombre);
+        cout << "Ingrese la edad de la persona: ";
+        cin >> persona.edad;
+        cin.ignore(); // Ignorar el carácter de nueva línea pendiente
+        cout << "Ingrese la ciudad de la persona: ";
+        getline(cin, persona.direccion.ciudad);
+        cout << "Ingrese la calle de la persona: ";
+        getline(cin, persona.direccion.calle);
+        cout << "Ingrese el número de la persona: ";
+        cin >> persona.direccion.numero;
+        cin.ignore(); // Ignorar el carácter de nueva línea pendiente
+        cout << "Ingrese los trabajos anteriores de la persona (separados por comas): ";
+        string trabajosInput;
+        getline(cin, trabajosInput);
+        stringstream ss(trabajosInput);
+        for (int i = 0; i < 3 && getline(ss, persona.trabajos[i], ','); ++i);
+        //creo la persona
+        cout << "Datos de la persona guardados:\n";
+        cout << "Nombre: " << persona.nombre << "\n";
+        cout << "Edad: " << persona.edad << "\n";
+        cout << "Direccion: " << persona.direccion.ciudad << ", "
+             << persona.direccion.calle << ", " << persona.direccion.numero << "\n";
+        cout << "Trabajos anteriores:\n";
+        for (const auto& trabajo : persona.trabajos) {
+            cout << "- " << trabajo << "\n";
+        }
+        cout << "---------------------------------\n";
+
+        // Guardamos los datos de la persona en un archivo CSV
+        nombreArchivo = "datos_persona.csv";
+        guardarPersona(persona, nombreArchivo);
+
+        cout << "¿Desea agregar más usuarios? (s/n): ";
+        char respuesta;
+        cin >> respuesta;
+        if(respuesta == 'n' || respuesta == 'N'){
+
+            seguir = false;
+        }
+        cin.ignore(); // Ignorar el carácter de nueva línea pendiente
+        
+
+    }while(seguir);
+
 
     // Guardamos los datos de la persona en un archivo CSV
     string nombreArchivo = "datos_persona.csv";
