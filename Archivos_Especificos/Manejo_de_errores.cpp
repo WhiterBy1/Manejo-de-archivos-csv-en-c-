@@ -1,12 +1,12 @@
 #include <iostream>
 #include <fstream>
-
+using namespace std;
 int main() {
-    std::ifstream archivo("noexiste.csv");  // Intentamos abrir un archivo que no existe
+    ifstream archivo("datos_persona.csv");  // Intentamos abrir un archivo que no existe
 
     // Comprobamos si el archivo se abrió correctamente
     if (!archivo.is_open()) {
-        std::cerr << "Error: No se pudo abrir el archivo.\n";
+        cerr << "Error: No se pudo abrir el archivo.\n";
         return 1;  // Finalizamos el programa si el archivo no existe
     }
 
@@ -14,7 +14,7 @@ int main() {
     while (std::getline(archivo, linea)) {  // Leemos cada línea del archivo
         if (linea.empty()) {  // Si la línea está vacía...
             std::cerr << "Advertencia: Línea vacía encontrada.\n";
-            continue;  // Saltamos a la siguiente línea sin procesar esta
+              // Saltamos a la siguiente línea sin procesar esta
         }
         std::cout << "Línea leída: " << linea << "\n";
     }
