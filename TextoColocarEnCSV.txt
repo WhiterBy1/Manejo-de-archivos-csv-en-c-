@@ -1,0 +1,11 @@
+Nombre,Edad,Ciudad,Calle,Numero,Trabajo1,Trabajo2,Trabajo3
+Carlos,30,Ciudad de México,Avenida Siempre Viva,123,Desarrollador,Ingeniero de soporte,Administrador
+Pepe,12,Cartagena,AV-45,123,Repartidor,Mesero,Ingeniero
+Maireth,16,Cartagena,Crr.52 #89-19,90213211,Asesora de ventas,Marketing,Pilota
+Ana,24,Bogotá,Calle 10,56,Vendedora,Community Manager,Administradora
+Luis,28,Buenos Aires,Calle Falsa,102,Marketing,Community Manager,Redactor
+Sofia,35,Lima,Avenida Principal,12,Ingeniera de calidad,Líder de equipo,Consultora
+Diego,33,Lima,Avenida Libertad,90,Programador,Administrador de sistemas,Analista de datos
+Elena,26,Bogotá,Carrera 15,54,Recursos Humanos,Asistente Administrativa,Entrenadora
+Juan,40,Medellín,Calle 20,78,Consultor,Desarrollador de software,Gerente de proyecto
+Luisa,32,Santiago,Calle Verde,56,Data Analyst,Científica de datos,Investigadora
