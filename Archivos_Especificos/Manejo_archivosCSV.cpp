@@ -26,7 +26,7 @@ int main() {
         stringstream ss(linea); // Convertimos la línea en un flujo de texto
         string valor;
         vector<string> fila; // Vector para almacenar una fila de datos
-
+        
         // Dividir la línea en "valores" separados por comas
         while (getline(ss, valor, ',')) { // Lee cada valor separado por comas
             fila.push_back(valor); // Agregar el valor al vector de la fila

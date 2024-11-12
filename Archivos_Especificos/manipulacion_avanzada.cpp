@@ -113,8 +113,6 @@ void ordenarColumnaBurbuja(vector<vector<string>>& datos, int columna) {
         for (size_t j = 0; j < numeros.size() - i - 1; ++j) {
             if (numeros[j] > numeros[j + 1]) {
                 swap(numeros[j], numeros[j + 1]);
-
-                // Intercambiamos filas en la matriz original para reflejar el orden
                 swap(datos[j + 1], datos[j + 2]);  // +1 y +2 porque empezamos en la fila 1
             }
         }
