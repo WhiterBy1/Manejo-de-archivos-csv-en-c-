@@ -39,123 +39,145 @@ void guardarCSV(const vector<vector<string>>& datos, const string& nombreArchivo
         archivo << "\n";
     }
     archivo.close();
+    cout << "Archivo guardado con éxito.\n";
 }
 
-// Función para eliminar una fila específica
+// Función para mostrar el contenido completo del CSV
+void mostrarCSV(const vector<vector<string>>& datos) {
+    cout << "\n--- Contenido del CSV ---\n";
+    for (const auto& fila : datos) {
+        for (const auto& dato : fila) {
+            cout << dato << " ";
+        }
+        cout << "\n";
+    }
+    cout << "-------------------------\n";
+}
+
+// Función para ordenar los datos según una columna específica
+void ordenarPorColumna(vector<vector<string>>& datos, int columna) {
+    if (columna >= 0 && columna < datos[0].size()) {
+        // Usamos sort con una lambda que compara las filas por el valor de la columna
+        sort(datos.begin() + 1, datos.end(), [columna](const vector<string>& a, const vector<string>& b) {
+            return a[columna] < b[columna];
+        });
+        cout << "Datos ordenados según la columna " << columna + 1 << ".\n";
+    } else {
+        cerr << "Número de columna inválido.\n";
+    }
+}
+
+// Función para eliminar una fila específica (no permite eliminar encabezados)
 void eliminarFila(vector<vector<string>>& datos, int fila) {
-    if (fila >= 0 && fila < datos.size()) {
+    if (fila >= 1 && fila < datos.size()) {
+        cout << "Eliminando fila: ";
+        for (const auto& dato : datos[fila]) {
+            cout << dato << " ";
+        }
+        cout << "\n";
         datos.erase(datos.begin() + fila);
     } else {
-        cerr << "Número de fila inválido." << endl;
+        cerr << "Número de fila inválido (no se puede eliminar la fila de encabezados).\n";
     }
 }
 
 // Función para eliminar una columna específica
 void eliminarColumna(vector<vector<string>>& datos, int columna) {
-    for (auto& fila : datos) {
-        if (columna >= 0 && columna < fila.size()) {
-            fila.erase(fila.begin() + columna);
+    cout << "Eliminando columna: ";
+    if (columna >= 0 && columna < datos[0].size()) {
+        for (size_t i = 0; i < datos.size(); ++i) {
+            cout << datos[i][columna] << " ";
+            datos[i].erase(datos[i].begin() + columna);
         }
+        cout << "\n";
+    } else {
+        cerr << "Número de columna inválido.\n";
     }
 }
 
-// Función para editar un dato específico en la matriz de datos
+// Función para editar un dato específico (no permite editar encabezados)
 void editarDato(vector<vector<string>>& datos, int fila, int columna, const string& nuevoValor) {
-    if (fila >= 0 && fila < datos.size() && columna >= 0 && columna < datos[fila].size()) {
+    if (fila >= 1 && fila < datos.size() && columna >= 0 && columna < datos[fila].size()) {
+        cout << "Editando dato [" << fila + 1 << ", " << columna + 1 << "] de '"
+             << datos[fila][columna] << "' a '" << nuevoValor << "'\n";
         datos[fila][columna] = nuevoValor;
     } else {
-        cerr << "Coordenadas de fila o columna inválidas." << endl;
+        cerr << "Coordenadas de fila o columna inválidas (no se pueden editar los encabezados).\n";
     }
 }
 
-// Función para convertir una columna a enteros y mostrar promedio, mínimo y máximo
+// Función para analizar una columna de enteros (omitiendo encabezados)
 void analizarColumnaEntero(const vector<vector<string>>& datos, int columna) {
-    vector<int> numeros;
-    for (size_t i = 1; i < datos.size(); ++i) {  // Empezamos desde la segunda fila (evitar encabezados)
-        try {
-            int numero = stoi(datos[i][columna]);
-            numeros.push_back(numero);
-        } catch (...) {
-            cerr << "Error al convertir el dato en la fila " << i + 1 << " a entero." << endl;
-        }
-    }
-
-    if (!numeros.empty()) {
-        int suma = 0, min = numeros[0], max = numeros[0];
-        for (int num : numeros) {
-            suma += num;
-            if (num < min) min = num;
-            if (num > max) max = num;
-        }
-        cout << "Promedio: " << (suma / numeros.size()) << endl;
-        cout << "Minimo: " << min << endl;
-        cout << "Maximo: " << max << endl;
-    } else {
-        cerr << "No hay datos enteros en esta columna." << endl;
-    }
-}
-
-// Función para ordenar una columna específica usando el método de burbuja
-void ordenarColumnaBurbuja(vector<vector<string>>& datos, int columna) {
-    // Convertir los datos a enteros solo para la columna especificada
-    vector<int> numeros;
-    for (size_t i = 1; i < datos.size(); ++i) {
-        try {
-            int numero = stoi(datos[i][columna]);
-            numeros.push_back(numero);
-        } catch (...) {
-            cerr << "Error: dato no convertible en la fila " << i + 1 << endl;
-        }
-    }
-
-    // Ordenar usando el método de burbuja
-    for (size_t i = 0; i < numeros.size() - 1; ++i) {
-        for (size_t j = 0; j < numeros.size() - i - 1; ++j) {
-            if (numeros[j] > numeros[j + 1]) {
-                swap(numeros[j], numeros[j + 1]);
-                swap(datos[j + 1], datos[j + 2]);  // +1 y +2 porque empezamos en la fila 1
+    if (columna >= 0 && columna < datos[0].size()) {
+        vector<int> numeros;
+        for (size_t i = 1; i < datos.size(); ++i) {
+            try {
+                int numero = stoi(datos[i][columna]);
+                numeros.push_back(numero);
+            } catch (...) {
+                cerr << "Error al convertir el dato en la fila " << i + 1 << " a entero.\n";
             }
         }
-    }
 
-    cout << "Datos ordenados en la columna especificada." << endl;
+        if (!numeros.empty()) {
+            int suma = 0, min = numeros[0], max = numeros[0];
+            for (int num : numeros) {
+                suma += num;
+                if (num < min) min = num;
+                if (num > max) max = num;
+            }
+            cout << "Promedio: " << (suma / numeros.size()) << "\n";
+            cout << "Mínimo: " << min << "\n";
+            cout << "Máximo: " << max << "\n";
+        } else {
+            cerr << "No hay datos enteros en esta columna.\n";
+        }
+    } else {
+        cerr << "Número de columna inválido.\n";
+    }
 }
 
 // Menú principal
 int main() {
-    string nombreArchivo = "datos_personas.csv";
+    string nombreArchivo = "datos_persona.csv";
     vector<vector<string>> datos = cargarCSV(nombreArchivo);
     int opcion;
 
     do {
-        cout << "\n--- MENU ---\n";
-        cout << "1. Eliminar fila\n";
-        cout << "2. Eliminar columna\n";
-        cout << "3. Editar dato\n";
-        cout << "4. Analizar columna (promedio, minimo, maximo)\n";
-        cout << "5. Ordenar columna (burbuja)\n";
-        cout << "6. Salir\n";
-        cout << "Seleccione una opcion: ";
+        cout << "\n--- MENÚ ---\n";
+        cout << "1. Mostrar CSV\n";
+        cout << "2. Eliminar fila\n";
+        cout << "3. Eliminar columna\n";
+        cout << "4. Editar dato\n";
+        cout << "5. Analizar columna (promedio, mínimo, máximo)\n";
+        cout << "6. Ordenar datos por columna\n";
+        cout << "7. Salir\n";
+        cout << "Seleccione una opción: ";
         cin >> opcion;
 
         switch (opcion) {
-            case 1: {
-                int fila;
-                cout << "Ingrese el número de fila a eliminar: ";
-                cin >> fila;
-                eliminarFila(datos, fila - 1);  // Convertir a índice (0-based)
-                guardarCSV(datos, nombreArchivo);
+            case 1:
+                mostrarCSV(datos);
                 break;
-            }
             case 2: {
-                int columna;
-                cout << "Ingrese el número de columna a eliminar: ";
-                cin >> columna;
-                eliminarColumna(datos, columna - 1);  // Convertir a índice (0-based)
+                int fila;
+                cout << "Ingrese el número de fila a eliminar (no se permite eliminar encabezados): ";
+                cin >> fila;
+                eliminarFila(datos, fila - 1);
                 guardarCSV(datos, nombreArchivo);
+                mostrarCSV(datos);
                 break;
             }
             case 3: {
+                int columna;
+                cout << "Ingrese el número de columna a eliminar: ";
+                cin >> columna;
+                eliminarColumna(datos, columna - 1);
+                guardarCSV(datos, nombreArchivo);
+                mostrarCSV(datos);
+                break;
+            }
+            case 4: {
                 int fila, columna;
                 string nuevoValor;
                 cout << "Ingrese el número de fila: ";
@@ -165,32 +187,34 @@ int main() {
                 cin.ignore();
                 cout << "Ingrese el nuevo valor: ";
                 getline(cin, nuevoValor);
-                editarDato(datos, fila - 1, columna - 1, nuevoValor);  // Convertir a índice (0-based)
+                editarDato(datos, fila - 1, columna - 1, nuevoValor);
                 guardarCSV(datos, nombreArchivo);
-                break;
-            }
-            case 4: {
-                int columna;
-                cout << "Ingrese el número de columna a analizar: ";
-                cin >> columna;
-                analizarColumnaEntero(datos, columna - 1);  // Convertir a índice (0-based)
+                mostrarCSV(datos);
                 break;
             }
             case 5: {
                 int columna;
-                cout << "Ingrese el número de columna a ordenar: ";
+                cout << "Ingrese el número de columna a analizar: ";
                 cin >> columna;
-                ordenarColumnaBurbuja(datos, columna - 1);  // Convertir a índice (0-based)
-                guardarCSV(datos, nombreArchivo);
+                analizarColumnaEntero(datos, columna - 1);
                 break;
             }
-            case 6:
-                cout << "Saliendo del programa." << endl;
+            case 6: {
+                int columna;
+                cout << "Ingrese el número de columna para ordenar los datos: ";
+                cin >> columna;
+                ordenarPorColumna(datos, columna - 1);
+                guardarCSV(datos, nombreArchivo);
+                mostrarCSV(datos);
+                break;
+            }
+            case 7:
+                cout << "Saliendo del programa.\n";
                 break;
             default:
                 cout << "Opción inválida.\n";
         }
-    } while (opcion != 6);
+    } while (opcion != 7);
 
     return 0;
 }
