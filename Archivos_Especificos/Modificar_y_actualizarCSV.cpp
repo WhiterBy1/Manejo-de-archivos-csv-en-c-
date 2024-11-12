@@ -11,7 +11,7 @@ struct Persona {
 
 int main() {
     // Abrimos el archivo en modo de lectura
-    std::ifstream archivoEntrada("personas.csv");
+    std::ifstream archivoEntrada("datos_persona.csv");
     std::vector<Persona> personas;
     std::string linea;
 

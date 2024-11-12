@@ -35,5 +35,7 @@
 *.pptx
 *.xlsx
 *.csv
+*.py
 .vscode/
 .vscode/
+D/
